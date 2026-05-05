@@ -52,7 +52,21 @@ from src.core.market_review import run_market_review
 
 from src.config import get_config, Config
 from src.logging_config import setup_logging
+#!/usr/bin/env python3
+import os
+import time
 
+# 强制使用北京时间
+os.environ['TZ'] = 'Asia/Shanghai'
+try:
+    time.tzset()
+except AttributeError:
+    pass
+
+# 然后才是你原来的 import
+import logging
+import pandas as pd
+# ... 其他 import
 
 logger = logging.getLogger(__name__)
 
