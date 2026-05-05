@@ -231,7 +231,7 @@ def _compute_trading_day_filter(
         - should_skip_all: skip entire run when no stocks and no market review to run
     """
     force_run = getattr(args, 'force_run', False)
-    if force_run or not getattr(config, 'trading_day_check_enabled', True):
+    if force_run or not getattr(config, 'trading_day_check_enabled', false):
         return (stock_codes, None, False)
 
     from src.core.trading_calendar import (
