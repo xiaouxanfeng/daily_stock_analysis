@@ -17,6 +17,11 @@ on:
           - full          # 完整分析（股票+大盘）
           - market-only   # 仅大盘复盘
           - stocks-only   # 仅股票分析
+      force_run:
+        description: '强制执行（跳过交易日检查，非交易日也运行）'
+        required: false
+        default: false
+        type: boolean
 
 # 并发控制：同一时间只运行一个分析任务
 concurrency:
@@ -198,12 +203,17 @@ jobs:
           echo ""
           
           # 执行分析
+          FORCE_FLAG=""
+          if [ "${{ github.event.inputs.force_run }}" = "true" ]; then
+            FORCE_FLAG="--force-run"
+          fi
+          
           if [ "$MODE" = "market-only" ]; then
-            python main.py --market-review
+            python main.py --market-review $FORCE_FLAG
           elif [ "$MODE" = "stocks-only" ]; then
-            python main.py --no-market-review
+            python main.py --no-market-review $FORCE_FLAG
           else
-            python main.py
+            python main.py $FORCE_FLAG
           fi
       
       - name: 上传分析报告
